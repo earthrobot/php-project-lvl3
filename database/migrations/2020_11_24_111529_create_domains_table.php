@@ -14,10 +14,9 @@ class CreateDomainsTable extends Migration
     public function up()
     {
         Schema::create('domains', function (Blueprint $table) {
-            $table->id();
-            $table->name();
-            $table->updated_at();
-            $table->created_at();
+            $table->increments('id');
+            $table->text('name');
+            $table->timestamps();
         });
     }
 
