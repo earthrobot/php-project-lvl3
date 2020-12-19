@@ -57,7 +57,7 @@ class DomainsTest extends TestCase
 
     public function testAddDomain()
     {
-        $response = $this->post(route('domains.store'), ['domain.name' => 'https://newdomain.ru']);
+        $response = $this->post(route('domains.store'), ['domain' => ['name' => 'https://newdomain.ru']]);
         $response->assertSessionHasNoErrors();
         $this->assertDatabaseHas('domains', ['name' => 'newdomain.ru']);
     }
