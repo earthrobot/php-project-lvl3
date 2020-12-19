@@ -21,16 +21,16 @@ Route::get('/', function () {
 
 Route::get('/domains', function () {
     $domains = DB::table('domains')->get();
-    return view('pages/domains', compact('domains'));
+    return view('pages.domains', compact('domains'));
 })->name('domains');
 
 Route::get('/domains/{id}', function ($id) {
     $domain = DB::table('domains')->find($id);
-    return view('pages/domain', compact('domain'));
+    return view('pages.domain', compact('domain'));
 })->name('domain');
 
 Route::post('/domains', function (Request $request) {
-
+    //dump($request);
     $validatedData = $request->validate([
         'domain.name' => 'required|max:255'
     ]);
@@ -59,4 +59,4 @@ Route::post('/domains', function (Request $request) {
     );
     flash('Domain added successfully');
     return view('home');
-})->name('add-domain');
+})->name('domains.store');

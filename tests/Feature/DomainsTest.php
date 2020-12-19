@@ -8,6 +8,7 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -21,9 +22,18 @@ class DomainsTest extends TestCase
      * @return void
      */
 
+    protected $id;
+
     protected function setUp(): void
     {
         parent::setUp();
+        DB::table('domains')->insert([
+            'name' => 'domain.ru',
+            'updated_at' => Carbon::now(),
+            'created_at' => Carbon::now()
+            ]
+        );
+        $this->id = DB::table('domains')->where('name', 'domain.ru')->value('id');
     }
 
     public function testHome()
@@ -38,27 +48,17 @@ class DomainsTest extends TestCase
         $response->assertOk();
     }
 
-    public function testAddDomain()
+    public function testDomain()
     {
-        DB::table('domains')->insert([
-            'name' => 'domain.ru',
-            'updated_at' => Carbon::now(),
-            'created_at' => Carbon::now()
-            ]
-        );
-        
-        $this->assertDatabaseHas('domains', 1);
+        $response = $this->get(route('domain', ['id' => $this->id]));
+        $response->assertSessionHasNoErrors();
+        $response->assertOk();
     }
 
-    public function testAddedDomain()
+    public function testAddDomain()
     {
-        DB::table('domains')->insert([
-            'name' => 'domain.ru',
-            'updated_at' => Carbon::now(),
-            'created_at' => Carbon::now()
-            ]
-        );
-        $response = $this->get(route('domain', 1));
-        $response->assertOk();
+        $response = $this->post(route('domains.store'), ['domain.name' => 'https://newdomain.ru']);
+        $response->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('domains', ['name' => 'newdomain.ru']);
     }
 }
