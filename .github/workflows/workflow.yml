@@ -13,10 +13,10 @@ jobs:
         with:
           php-version: '7.4'
       - name: Run test & publish code coverage
-        uses: paambaati/codeclimate-action@v2.6.0
+        uses: paambaati/codeclimate-action@v2.7.5
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: make test-coverage
+          coverageCommand: make test
           coverageLocations: ${{github.workplace}}/build/logs/clover.xml:clover
           debug: true
