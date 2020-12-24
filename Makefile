@@ -26,7 +26,7 @@ test:
 	php artisan test
 
 test-coverage:
-	php artisan test -- tests --whitelist tests --coverage-clover coverage-report
+	composer phpunit -- tests --whitelist tests --coverage-clover coverage-report
 
 deploy:
 	git push heroku
