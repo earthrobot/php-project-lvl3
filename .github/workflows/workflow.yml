@@ -12,6 +12,8 @@ jobs:
         uses: shivammathur/setup-php@v1
         with:
           php-version: '7.4'
+      - name: Setup
+        run: make setup
       - name: Run test & publish code coverage
         uses: paambaati/codeclimate-action@v2.7.5
         env:
