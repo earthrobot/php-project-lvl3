@@ -7,23 +7,13 @@
     <body>   
         <div class="container"> 
         @include('flash::message')
-
         <?php if (!empty($domains)) : ?>
-
-            <ul>
-            
+            <ul>            
                 @foreach($domains as $domain)
-
                     <li>{{ $domain->name }}</li>
-
-                @endforeach
-            
-            </ul>
-        
+                @endforeach            
+            </ul>        
         <?php endif; ?> 
-
         </div>
-
-    </body>
-    
+    </body>    
 </html>

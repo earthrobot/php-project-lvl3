@@ -12,8 +12,6 @@ jobs:
         uses: shivammathur/setup-php@v1
         with:
           php-version: '7.4'
-      - name: Run linter
-        run: make lint
       - name: Run test & publish code coverage
         uses: paambaati/codeclimate-action@v2.6.0
         env:
