@@ -16,14 +16,14 @@
         "laracasts/flash": "^3.2",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
-        "nesbot/carbon": "^2.42"
+        "nesbot/carbon": "^2.42",
+        "phpunit/phpunit": "^9.3.3"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "nunomaduro/collision": "^5.0"
     },
     "config": {
         "optimize-autoloader": true,
