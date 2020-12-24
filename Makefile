@@ -26,13 +26,13 @@ test:
 	php artisan test
 
 test-coverage:
-	php artisan test --whitelist tests --coverage-clover coverage-report
+	php artisan test -- tests --whitelist tests --coverage-clover coverage-report
 
 deploy:
 	git push heroku
 
 lint:
-	composer phpcs
+	composer phpcs -- --standard=PSR12 routes
 
 lint-fix:
 	composer phpcbf
