@@ -19,6 +19,6 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-        coverageCommand: make test-coverage
-        coverageLocations: ${{github.workspace}}/coverage-report:clover
-        debug: true
+          coverageCommand: make test-coverage
+          coverageLocations: ${{github.workspace}}/coverage-report:clover
+          debug: true
