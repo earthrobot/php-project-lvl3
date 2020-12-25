@@ -15,10 +15,11 @@ jobs:
       - name: Setup
         run: make setup
       - name: Run test & publish code coverage
-        uses: paambaati/codeclimate-action@v2.7.5
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: make test-coverage
-          coverageLocations: ${{github.workspace}}/coverage-report:clover
-          debug: true
+        run: make test
+        #uses: paambaati/codeclimate-action@v2.7.5
+        #env:
+          #CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        #with:
+          #coverageCommand: make test-coverage
+          #coverageLocations: ${{github.workspace}}/coverage-report:clover
+          #debug: true
