@@ -61,4 +61,11 @@ class DomainsTest extends TestCase
         $response->assertSessionHasNoErrors();
         $this->assertDatabaseHas('domains', ['name' => 'newdomain.ru']);
     }
+
+    public function testAddDomainCheck()
+    {
+        $response = $this->post(route('domains.check', ['id' => $this->id]));
+        $response->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('domain_checks', ['id' => $this->id]);
+    }
 }

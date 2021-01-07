@@ -26,7 +26,8 @@ Route::get('/domains', function () {
 
 Route::get('/domains/{id}', function ($id) {
     $domain = DB::table('domains')->find($id);
-    return view('pages.domain', compact('domain'));
+    $domain_checks = DB::table('domain_checks')->where('domain_id', '=', $id)->get();
+    return view('pages.domain', ['domain'=>$domain, 'domain_checks'=>$domain_checks]);
 })->name('domain');
 
 Route::post('/domains', function (Request $request) {
@@ -60,3 +61,15 @@ Route::post('/domains', function (Request $request) {
     flash('Domain added successfully');
     return view('home');
 })->name('domains.store');
+
+Route::post('/domains/{id}/checks', function ($id) {
+    DB::table('domain_checks')->insert([
+        'domain_id' => $id,
+        'updated_at' => Carbon::now(),
+        'created_at' => Carbon::now()
+    ]);
+    DB::table('domains')->where('id', $id)->update(['updated_at' => Carbon::now()]);
+    flash('Check added successfully');
+    $domain_checks = DB::table('domain_checks')->get();
+    return redirect()->route('domain', ['id' => $id]);
+})->name('domains.check');
