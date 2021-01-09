@@ -63,7 +63,7 @@
                             <th>{{ $domain->id }}</th>
                             <th><a href="/domains/{{ $domain->id }}">{{ $domain->name }}</a></th>
                             <th>{{ $domain->updated_at }}</th>
-                            <th>{{ $domain->created_at }}</th>
+                            <th>{{ $domain->last_code }}</th>
                         </tr>
                         @endforeach   
                     </table>

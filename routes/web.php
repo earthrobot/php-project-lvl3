@@ -1,8 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use DiDom\Document;
+use DiDom\Query;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +24,9 @@ Route::get('/', function () {
 
 Route::get('/domains', function () {
     $domains = DB::table('domains')->get();
+    foreach ($domains as $domain) {
+        $domain->last_code = DB::table('domain_checks')->where('domain_id', $domain->id)->value('status_code');
+    }    
     return view('pages.domains', compact('domains'));
 })->name('domains');
 
@@ -31,7 +37,6 @@ Route::get('/domains/{id}', function ($id) {
 })->name('domain');
 
 Route::post('/domains', function (Request $request) {
-    //dump($request);
     $validatedData = $request->validate([
         'domain.name' => 'required|max:255'
     ]);
@@ -43,7 +48,7 @@ Route::post('/domains', function (Request $request) {
         return view('home');
     }
 
-    $domainName = strtolower($parsedDomain['host']);
+    $domainName = strtolower($domain);
 
     $findName = DB::table('domains')->where('name', '=', $domainName)->get();
 
@@ -59,12 +64,28 @@ Route::post('/domains', function (Request $request) {
         ]
     );
     flash('Domain added successfully');
-    return view('home');
+
+    $findID = DB::table('domains')->where('name', $domainName)->value('id');
+    return redirect()->route('domain', ['id' => $findID]);
 })->name('domains.store');
 
 Route::post('/domains/{id}/checks', function ($id) {
+    $domainName = DB::table('domains')->find($id);
+    $response = Http::get($domainName->name);
+
+    $body = $response->getBody()->getContents();
+    $document = new Document($body);
+
+    $h1 = optional($document->first('h1'))->text();
+    $keywords = optional($document->find('meta[name=keywords]::attr(content)'))[0];
+    $description = optional($document->find('meta[name=description]::attr(content)'))[0];
+
     DB::table('domain_checks')->insert([
         'domain_id' => $id,
+        'status_code' => $response->status(),
+        'h1' => $h1,
+        'keywords' => $keywords,
+        'description' => $description,
         'updated_at' => Carbon::now(),
         'created_at' => Carbon::now()
     ]);

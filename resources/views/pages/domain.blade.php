@@ -87,10 +87,10 @@
                     @foreach ($domain_checks as $domain_check)
                     <tr>
                         <th>{{ $domain_check->id }}</th>
-                        <th>Status Code</th>
-                        <th>h1</th>
-                        <th>Keywords</th>
-                        <th>Description</th>
+                        <th>{{ $domain_check->status_code }}</th>
+                        <th>{{ $domain_check->h1 }}</th>
+                        <th>{{ $domain_check->keywords }}</th>
+                        <th>{{ $domain_check->description }}</th>
                         <th>{{ $domain_check->created_at }}</th>
                     </tr>
                     @endforeach

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Http;
 
 class DomainsTest extends TestCase
 {
@@ -27,13 +28,14 @@ class DomainsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->name = 'https://domain.ru';
         DB::table('domains')->insert([
-            'name' => 'domain.ru',
+            'name' => $this->name,
             'updated_at' => Carbon::now(),
             'created_at' => Carbon::now()
             ]
         );
-        $this->id = DB::table('domains')->where('name', 'domain.ru')->value('id');
+        $this->id = DB::table('domains')->where('name', $this->name)->value('id');
     }
 
     public function testHome()
@@ -59,13 +61,15 @@ class DomainsTest extends TestCase
     {
         $response = $this->post(route('domains.store'), ['domain' => ['name' => 'https://newdomain.ru']]);
         $response->assertSessionHasNoErrors();
-        $this->assertDatabaseHas('domains', ['name' => 'newdomain.ru']);
+        $this->assertDatabaseHas('domains', ['name' => 'https://newdomain.ru']);
     }
 
     public function testAddDomainCheck()
     {
+        $body = '<html><head><meta name="keywords" content="keywords"><meta name="description" content="description"></head><body><h1>Page title</h1></body></html>';
+        Http::fake(fn($request) => Http::response($body, 200));
         $response = $this->post(route('domains.check', ['id' => $this->id]));
         $response->assertSessionHasNoErrors();
-        $this->assertDatabaseHas('domain_checks', ['id' => $this->id]);
+        $this->assertDatabaseHas('domain_checks', ['domain_id' => $this->id]);
     }
 }
