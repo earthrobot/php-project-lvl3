@@ -1,0 +1,9 @@
+<html>
+    <head>
+        <meta name="keywords" content="keyword1, keyword2, keyword3">
+        <meta name="description" content="page description">
+    </head>
+    <body>
+        <h1>Page title</h1>
+    </body>
+</html>        

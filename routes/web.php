@@ -18,15 +18,18 @@ use DiDom\Query;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
+Route::get('/', function (Request $request) {
+    $domain = $request->old('domain[name]');
+    return view('home', ['domain' => $domain]);
 })->name('home');
 
 Route::get('/domains', function () {
-    $domains = DB::table('domains')->get();
-    foreach ($domains as $domain) {
-        $domain->last_code = DB::table('domain_checks')->where('domain_id', $domain->id)->value('status_code');
-    }    
+
+    $domains = DB::table('domains')
+            ->join('domain_checks', 'domains.id', '=', 'domain_checks.domain_id')
+            ->select('domains.*', 'domain_checks.status_code')
+            ->get();
+
     return view('pages.domains', compact('domains'));
 })->name('domains');
 
@@ -37,24 +40,24 @@ Route::get('/domains/{id}', function ($id) {
 })->name('domain');
 
 Route::post('/domains', function (Request $request) {
-    $validatedData = $request->validate([
-        'domain.name' => 'required|max:255'
-    ]);
-    
-    $domain = $validatedData['domain']['name'];
-    $parsedDomain = parse_url($domain);
-    if (empty($parsedDomain['host'])) {
-        flash('Not a valid url.');
-        return view('home');
-    }
 
-    $domainName = strtolower($domain);
+    $validator = Validator::make($request->all(), [
+        'domain.name' => 'required|max:255|url'
+    ]);
+
+    if ($validator->fails()) {
+        return redirect(route('home'))
+                    ->withErrors($validator)
+                    ->withInput();
+    }
+    
+    $domainName = mb_strtolower($request['domain']['name']);
 
     $findName = DB::table('domains')->where('name', '=', $domainName)->get();
 
     if ($findName->count() > 0) {
         flash('Domain exists');
-        return view('home');
+        return redirect()->route('home');
     }
 
     DB::table('domains')->insert([
@@ -93,4 +96,4 @@ Route::post('/domains/{id}/checks', function ($id) {
     flash('Check added successfully');
     $domain_checks = DB::table('domain_checks')->get();
     return redirect()->route('domain', ['id' => $id]);
-})->name('domains.check');
+})->name('domain.check');
