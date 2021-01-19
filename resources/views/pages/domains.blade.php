@@ -19,7 +19,11 @@
                     <th>{{ $domain->id }}</th>
                     <th><a href="/domains/{{ $domain->id }}">{{ $domain->name }}</a></th>
                     <th>{{ $domain->updated_at }}</th>
-                    <th>{{ $domain->status_code }}</th>
+                    <th>@foreach($domain_checks->where('domain_id', $domain->id) as $domain_check)
+                        @if ($loop->last)
+                            {{ $domain_check->status_code }}
+                        @endif
+                    @endforeach</th>
                 </tr>
                 @endforeach   
             </table>

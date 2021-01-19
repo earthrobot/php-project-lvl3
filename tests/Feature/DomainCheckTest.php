@@ -35,6 +35,7 @@ class DomainCheckTest extends TestCase
 
         $response = $this->post(route('domain.check', ['id' => $this->id]));
         $response->assertSessionHasNoErrors();
+        $response->assertRedirect();
         $this->assertDatabaseHas('domain_checks', [
             'domain_id' => $this->id, 
             'status_code' => 200, 

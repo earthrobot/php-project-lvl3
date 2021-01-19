@@ -18,37 +18,48 @@ class DomainsTest extends TestCase
     {
         parent::setUp();
 
+        $this->name = 'https://domain.ru';
         $this->id = DB::table('domains')->insertGetId([
-            'name' => 'https://domain.ru',
+            'name' => $this->name,
             'updated_at' => Carbon::now(),
             'created_at' => Carbon::now()
         ]);
-    }
 
-    public function testDomainsIndex()
-    {
         DB::table('domain_checks')->insert([
             'domain_id' => $this->id,
             'updated_at' => Carbon::now(),
             'created_at' => Carbon::now()
             ]
         );
-        $response = $this->get(route('domains'));
+    }
+
+    public function testDomainsIndex()
+    {
+        $response = $this->get(route('domains.index'));
         $response->assertOk();
     }
 
     public function testDomainShow()
     {
-        $response = $this->get(route('domain', ['id' => $this->id]));
+        $response = $this->get(route('domain.show', ['id' => $this->id]));
         $response->assertSessionHasNoErrors();
         $response->assertOk();
-        $response->assertSee($this->id);
+        $response->assertSee($this->name);
     }
 
     public function testDomainStore()
     {
-        $response = $this->post(route('domains.store'), ['domain' => ['name' => 'https://newdomain.ru']]);
+        $domainName = 'https://newdomain.ru';
+        $response = $this->post(route('domains.store'), ['domain' => ['name' => $domainName]]);
         $response->assertSessionHasNoErrors();
-        $this->assertDatabaseHas('domains', ['name' => 'https://newdomain.ru']);
+        $this->assertDatabaseHas('domains', ['name' => $domainName]);
+        $id = DB::table('domains')->where('name', $domainName)->value('id');
+        $response->assertRedirect(route('domain.show', ['id' => $id]));
+    }
+
+    public function testDomainStoreIfDomainExists()
+    {
+        $response = $this->post(route('domains.store'), ['domain' => ['name' => $this->name]]);
+        $response->assertRedirect(route('domain.show', ['id' => $this->id]));
     }
 }
