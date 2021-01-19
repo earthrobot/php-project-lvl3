@@ -37,10 +37,10 @@ class DomainCheckTest extends TestCase
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
         $this->assertDatabaseHas('domain_checks', [
-            'domain_id' => $this->id, 
-            'status_code' => 200, 
-            'h1' => 'Page title', 
-            'keywords' => 'keyword1, keyword2, keyword3', 
+            'domain_id' => $this->id,
+            'status_code' => 200,
+            'h1' => 'Page title',
+            'keywords' => 'keyword1, keyword2, keyword3',
             'description' => 'page description',
             'updated_at' => Carbon::now(),
             'created_at' => Carbon::now()

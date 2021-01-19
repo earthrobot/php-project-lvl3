@@ -64,23 +64,23 @@ Route::post('/domains', function (Request $request) {
         'created_at' => Carbon::now()
     ]);
     flash('Domain added successfully');
-    
+
     return redirect()->route('domain.show', ['id' => $id]);
 })->name('domains.store');
 
 Route::post('/domains/{id}/checks', function ($id) {
 
-    $domainName = DB::table('domains')->find($id);  
+    $domainName = DB::table('domains')->find($id);
 
     try {
         $response = Http::get($domainName->name);
         $body = $response->getBody()->getContents();
         $document = new Document($body);
-    
+
         $h1 = optional($document->first('h1'))->text();
         $keywords = optional($document->find('meta[name=keywords]::attr(content)'))[0];
         $description = optional($document->find('meta[name=description]::attr(content)'))[0];
-    
+
         DB::table('domain_checks')->insert([
             'domain_id' => $id,
             'status_code' => $response->status(),
@@ -97,5 +97,4 @@ Route::post('/domains/{id}/checks', function ($id) {
     }
 
     return redirect()->route('domain.show', ['id' => $id]);
-
 })->name('domain.check');

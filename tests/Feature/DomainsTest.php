@@ -29,8 +29,7 @@ class DomainsTest extends TestCase
             'domain_id' => $this->id,
             'updated_at' => Carbon::now(),
             'created_at' => Carbon::now()
-            ]
-        );
+        ]);
     }
 
     public function testDomainsIndex()
