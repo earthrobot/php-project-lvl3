@@ -19,7 +19,7 @@ class DomainCheckTest extends TestCase
 
     protected function setUp(): void
     {
-        parent::setUp();        
+        parent::setUp();
 
         $this->id = DB::table('domains')->insertGetId([
             'name' => 'https://domain.ru',
@@ -28,7 +28,7 @@ class DomainCheckTest extends TestCase
         ]);
     }
 
-    public function testDomainCheckStore() : void
+    public function testDomainCheckStore(): void
     {
         $pathParts = [__DIR__, 'fixtures', 'htmlDocument.txt'];
         $body = file_get_contents(implode("/", $pathParts));

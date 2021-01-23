@@ -10,7 +10,7 @@ class DomainsTest extends TestCase
 {
     private int $id;
     private string $name;
-    
+
     /**
      * A basic feature test.
      *
@@ -35,13 +35,13 @@ class DomainsTest extends TestCase
         ]);
     }
 
-    public function testDomainsIndex() : void
+    public function testDomainsIndex(): void
     {
         $response = $this->get(route('domains.index'));
         $response->assertOk();
     }
 
-    public function testDomainShow() : void
+    public function testDomainShow(): void
     {
         $response = $this->get(route('domains.show', ['id' => $this->id]));
         $response->assertSessionHasNoErrors();
@@ -49,7 +49,7 @@ class DomainsTest extends TestCase
         $response->assertSee($this->name);
     }
 
-    public function testDomainStore() : void
+    public function testDomainStore(): void
     {
         $domainName = 'https://newdomain.ru';
         $response = $this->post(route('domains.store'), ['domain' => ['name' => $domainName]]);
@@ -59,7 +59,7 @@ class DomainsTest extends TestCase
         $response->assertRedirect(route('domains.show', ['id' => $id]));
     }
 
-    public function testDomainStoreIfDomainExists() : void
+    public function testDomainStoreIfDomainExists(): void
     {
         $response = $this->post(route('domains.store'), ['domain' => ['name' => $this->name]]);
         $response->assertRedirect(route('domains.show', ['id' => $this->id]));

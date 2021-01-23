@@ -18,12 +18,12 @@ use DiDom\Query;
 |
 */
 
-Route::get('/', function (Request $request) : Illuminate\View\View {
+Route::get('/', function (Request $request): Illuminate\View\View {
     $domain = $request->old('domain[name]');
     return view('home', ['domain' => $domain]);
 })->name('home');
 
-Route::get('/domains', function () : Illuminate\View\View {
+Route::get('/domains', function (): Illuminate\View\View {
 
     $domains = DB::table('domains')->get();
 
@@ -38,13 +38,13 @@ Route::get('/domains', function () : Illuminate\View\View {
     return view('domains.index', ['domains' => $domains, 'domain_checks' => $domain_checks]);
 })->name('domains.index');
 
-Route::get('/domains/{id}', function ($id) : Illuminate\View\View {
+Route::get('/domains/{id}', function ($id): Illuminate\View\View {
     $domain = DB::table('domains')->find($id);
     $domain_checks = DB::table('domain_checks')->where('domain_id', $id)->latest()->get();
     return view('domains.show', ['domain' => $domain, 'domain_checks' => $domain_checks]);
 })->name('domains.show');
 
-Route::post('/domains', function (Request $request) : Illuminate\Http\RedirectResponse {
+Route::post('/domains', function (Request $request): Illuminate\Http\RedirectResponse {
 
     $validator = Validator::make($request->all(), [
         'domain.name' => 'required|max:255|url'
@@ -75,7 +75,7 @@ Route::post('/domains', function (Request $request) : Illuminate\Http\RedirectRe
     return redirect()->route('domains.show', ['id' => $id]);
 })->name('domains.store');
 
-Route::post('/domains/{id}/checks', function ($id) : Illuminate\Http\RedirectResponse {
+Route::post('/domains/{id}/checks', function ($id): Illuminate\Http\RedirectResponse {
 
     $domainName = DB::table('domains')->find($id);
 
