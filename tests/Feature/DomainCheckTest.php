@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Http;
 
 class DomainCheckTest extends TestCase
 {
+    private int $id;
+
     /**
      * A basic feature test.
      *
@@ -17,7 +19,7 @@ class DomainCheckTest extends TestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
+        parent::setUp();        
 
         $this->id = DB::table('domains')->insertGetId([
             'name' => 'https://domain.ru',
@@ -26,14 +28,18 @@ class DomainCheckTest extends TestCase
         ]);
     }
 
-    public function testDomainCheckStore()
+    public function testDomainCheckStore() : void
     {
         $pathParts = [__DIR__, 'fixtures', 'htmlDocument.txt'];
         $body = file_get_contents(implode("/", $pathParts));
 
+        if ($body === false) {
+            throw new \Exception('Something wrong with fixtures file');
+        }
+
         Http::fake(fn($request) => Http::response($body, 200));
 
-        $response = $this->post(route('domain.check', ['id' => $this->id]));
+        $response = $this->post(route('domains.checks.store', ['id' => $this->id]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
         $this->assertDatabaseHas('domain_checks', [

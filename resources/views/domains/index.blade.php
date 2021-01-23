@@ -17,13 +17,9 @@
                 @foreach($domains as $domain)
                 <tr>
                     <th>{{ $domain->id }}</th>
-                    <th><a href="/domains/{{ $domain->id }}">{{ $domain->name }}</a></th>
+                    <th><a href="{{ route('domains.show', ['id' => $domain->id], false) }}">{{ $domain->name }}</a></th>
                     <th>{{ $domain->updated_at }}</th>
-                    <th>@foreach($domain_checks->where('domain_id', $domain->id) as $domain_check)
-                        @if ($loop->last)
-                            {{ $domain_check->status_code }}
-                        @endif
-                    @endforeach</th>
+                    <th>{{ $domain_checks[$domain->id]->status_code ?? ''}}</th>
                 </tr>
                 @endforeach   
             </table>

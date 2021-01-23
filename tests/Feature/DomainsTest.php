@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 
 class DomainsTest extends TestCase
 {
+    private int $id;
+    private string $name;
+    
     /**
      * A basic feature test.
      *
@@ -32,33 +35,33 @@ class DomainsTest extends TestCase
         ]);
     }
 
-    public function testDomainsIndex()
+    public function testDomainsIndex() : void
     {
         $response = $this->get(route('domains.index'));
         $response->assertOk();
     }
 
-    public function testDomainShow()
+    public function testDomainShow() : void
     {
-        $response = $this->get(route('domain.show', ['id' => $this->id]));
+        $response = $this->get(route('domains.show', ['id' => $this->id]));
         $response->assertSessionHasNoErrors();
         $response->assertOk();
         $response->assertSee($this->name);
     }
 
-    public function testDomainStore()
+    public function testDomainStore() : void
     {
         $domainName = 'https://newdomain.ru';
         $response = $this->post(route('domains.store'), ['domain' => ['name' => $domainName]]);
         $response->assertSessionHasNoErrors();
         $this->assertDatabaseHas('domains', ['name' => $domainName]);
         $id = DB::table('domains')->where('name', $domainName)->value('id');
-        $response->assertRedirect(route('domain.show', ['id' => $id]));
+        $response->assertRedirect(route('domains.show', ['id' => $id]));
     }
 
-    public function testDomainStoreIfDomainExists()
+    public function testDomainStoreIfDomainExists() : void
     {
         $response = $this->post(route('domains.store'), ['domain' => ['name' => $this->name]]);
-        $response->assertRedirect(route('domain.show', ['id' => $this->id]));
+        $response->assertRedirect(route('domains.show', ['id' => $this->id]));
     }
 }

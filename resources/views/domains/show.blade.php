@@ -27,7 +27,7 @@
             </table>
         </div>
         <h2 class="mt-5 mb-3">Checks</h2>
-        <form method="post" action="/domains/{{ $domain->id }}/checks">
+        <form method="post" action="{{ route('domains.checks.store', ['id' => $domain->id], false) }}">
             {{ csrf_field() }}           
             <input type="submit" class="btn btn-primary" value="Run check">
         </form>
@@ -45,9 +45,9 @@
                 <tr>
                     <th>{{ $domain_check->id }}</th>
                     <th>{{ $domain_check->status_code }}</th>
-                    <th>{{ $domain_check->h1 }}</th>
-                    <th>{{ $domain_check->keywords }}</th>
-                    <th>{{ $domain_check->description }}</th>
+                    <th>{{ Str::limit($domain_check->h1, 30) }}</th>
+                    <th>{{ Str::limit($domain_check->keywords, 30) }}</th>
+                    <th>{{ Str::limit($domain_check->description, 30)}}</th>
                     <th>{{ $domain_check->created_at }}</th>
                 </tr>
                 @endforeach
