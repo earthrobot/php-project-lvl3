@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DiDom\Document;
-use DiDom\Query;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\ConnectionException;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,7 +100,7 @@ Route::post('/domains/{id}/checks', function ($id): Illuminate\Http\RedirectResp
         ]);
         DB::table('domains')->where('id', $id)->update(['updated_at' => Carbon::now()]);
         flash('Check added successfully');
-    } catch (Exception $e) {
+    } catch (RequestException | ConnectionException $e) {
         flash($e->getMessage());
     }
 
