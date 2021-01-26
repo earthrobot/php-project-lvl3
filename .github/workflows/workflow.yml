@@ -35,6 +35,9 @@ jobs:
         uses: paambaati/codeclimate-action@v2.7.5
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: analyzer
         with:
           coverageCommand: make test-coverage
           coverageLocations: ${{github.workspace}}/coverage-report:clover
