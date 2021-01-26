@@ -1,7 +1,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/b21eff03c999baa44076/maintainability)](https://codeclimate.com/github/earthrobot/php-project-lvl3/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b21eff03c999baa44076/test_coverage)](https://codeclimate.com/github/earthrobot/php-project-lvl3/test_coverage)
-![Github Actions](https://github.com/earthrobot/php-project-lvl3/.github/workflows/workflow.yml/badge.svg)
-![Hexlet Check](https://github.com/earthrobot/php-project-lvl3/.github/workflows/hexlet-check.yml/badge.svg)
+![Github Actions](https://github.com/earthrobot/php-project-lvl3/workflows/workflow/badge.svg)
+![Hexlet Check](https://github.com/earthrobot/php-project-lvl3/workflows/hexlet-check/badge.svg)
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
