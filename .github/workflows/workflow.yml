@@ -34,8 +34,9 @@ jobs:
           POSTGRES_PORT: 5432
       - name: Setup
         run: make setup
-      - name: Run test & publish code coverage
+      - name: Run test
         run: make test
+      - name: Publish code coverage
         uses: paambaati/codeclimate-action@v2.7.5
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
