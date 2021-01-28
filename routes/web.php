@@ -81,6 +81,8 @@ Route::post('/domains/{id}/checks', function ($id): Illuminate\Http\RedirectResp
 
     $domainName = DB::table('domains')->find($id);
 
+    abort_unless($domainName, 404);
+
     try {
         $response = Http::get($domainName->name);
         $body = $response->getBody()->getContents();
