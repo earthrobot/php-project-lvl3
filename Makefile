@@ -31,7 +31,7 @@ deploy:
 	git push heroku
 
 lint:
-	composer exec -v phpcs -- --standard=PSR12 routes
+	composer exec -v phpcs
 
 lint-fix:
 	composer phpcbf
