@@ -18,7 +18,7 @@
                 <tr>
                     <th>{{ $domain->id }}</th>
                     <th><a href="{{ route('domains.show', ['id' => $domain->id], false) }}">{{ $domain->name }}</a></th>
-                    <th>{{ $domain->updated_at }}</th>
+                    <th>{{ $domain_checks[$domain->id]->updated_at ?? '' }}</th>
                     <th>{{ $domain_checks[$domain->id]->status_code ?? ''}}</th>
                 </tr>
                 @endforeach   

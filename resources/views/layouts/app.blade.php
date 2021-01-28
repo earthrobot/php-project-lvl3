@@ -25,10 +25,10 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('home', false) }}">Home</a>
+                            <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home', false) }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{ route('domains.index', false) }}">Domains</a>
+                            <a class="nav-link {{ request()->routeIs('domains.index') ? 'active' : '' }}" href="{{ route('domains.index', false) }}">Domains</a>
                         </li>
                     </ul>
                 </div>

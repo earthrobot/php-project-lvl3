@@ -42,6 +42,7 @@ Route::get('/domains', function (): Illuminate\View\View {
 Route::get('/domains/{id}', function ($id): Illuminate\View\View {
     $domain = DB::table('domains')->find($id);
     $domain_checks = DB::table('domain_checks')->where('domain_id', $id)->latest()->get();
+    abort_unless($domain, 404);
     return view('domains.show', ['domain' => $domain, 'domain_checks' => $domain_checks]);
 })->name('domains.show');
 
@@ -62,7 +63,7 @@ Route::post('/domains', function (Request $request): Illuminate\Http\RedirectRes
     $domain = DB::table('domains')->where('name', $domainName)->first();
 
     if ($domain !== null) {
-        flash('Domain exists');
+        flash('Domain exists', 'danger');
         return redirect()->route('domains.show', ['id' => $domain->id]);
     }
 
@@ -101,7 +102,7 @@ Route::post('/domains/{id}/checks', function ($id): Illuminate\Http\RedirectResp
         DB::table('domains')->where('id', $id)->update(['updated_at' => Carbon::now()]);
         flash('Check added successfully');
     } catch (RequestException | ConnectionException $e) {
-        flash($e->getMessage());
+        flash($e->getMessage(), 'danger');
     }
 
     return redirect()->route('domains.show', ['id' => $id]);
